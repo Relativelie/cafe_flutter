@@ -64,11 +64,9 @@ class RecipesService with ChangeNotifier {
   Recipe? selectedRecipe;
 
   Future<void> getRecipes() async {
-    print('_edamamQueryParams ${_edamamQueryParams}');
-    print('_url ${_url}');
     const params = {"q": "cherry"};
     final queryParams = {..._edamamQueryParams, ...params};
-    final recipesData = await methods.get(_url, queryParams);
+    final recipesData = await methods.get(_url, params: queryParams);
     try {
       var arr = recipesData["hits"];
       if (arr.length != 0) {

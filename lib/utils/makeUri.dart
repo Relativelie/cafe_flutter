@@ -1,10 +1,8 @@
 import 'package:flutter_application_1/config.dart';
 
-
-
 Uri makeUri(
-  String serverUrl,
-  bool isEdamamQuery, [
+  String serverUrl, [
+  bool isEdamamQuery = false,
   String path = "",
   Map<String, dynamic>? query,
 ]) {
@@ -17,6 +15,6 @@ Uri makeUri(
     path: path.isNotEmpty ? path : uriServer.path,
     queryParameters: query,
   );
-print('uri ${uri}');
+  print('uri ${uri}');
   return uri;
 }
