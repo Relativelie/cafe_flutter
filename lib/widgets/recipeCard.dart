@@ -18,50 +18,58 @@ class RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
+    return Container(
+        color: Theme.of(context).primaryColor,
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              height: 120.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(image),
-                    fit: BoxFit.cover,
-                    alignment: Alignment.bottomCenter),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                title,
-                style: Theme.of(context).textTheme.titleLarge,
-                textAlign: TextAlign.center,
-              ),
-            )
-          ],
-        ),
-        Column(
-          children: [
-            Wrap(spacing: 5.0, alignment: WrapAlignment.center, children: [
-              ...cuisineLabels
-                  .take(3)
-                  .map((cuisine) => Text('#$cuisine'))
-                  .toList(),
-              ...dietLabels.take(3).map((diet) => Text('#$diet')).toList()
-            ]),
-            Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).highlightColor,
-                  borderRadius: BorderRadius.circular(AppTheme.xsRadius),
+            Column(
+              children: [
+                Container(
+                  height: 120.0,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(image),
+                        fit: BoxFit.cover,
+                        alignment: Alignment.bottomCenter),
+                  ),
                 ),
-                margin: const EdgeInsets.only(top: 10),
-                padding: const EdgeInsets.all(5),
-                child: Text('${ingredients.toString()} INGREDIENTS'))
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              ],
+            ),
+            Column(
+              children: [
+                Wrap(spacing: 5.0, alignment: WrapAlignment.center, children: [
+                  ...cuisineLabels
+                      .take(3)
+                      .map((cuisine) => Text('#$cuisine'))
+                      .toList(),
+                  ...dietLabels
+                      .take(3)
+                      .map((diet) => Text('#$diet',
+                          style: Theme.of(context).textTheme.bodyMedium))
+                      .toList()
+                ]),
+                Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).highlightColor,
+                      borderRadius: BorderRadius.circular(AppTheme.xsRadius),
+                    ),
+                    margin: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.all(5),
+                    child: Text('${ingredients.toString()} INGREDIENTS',
+                        style: Theme.of(context).textTheme.bodyLarge)),
+              ],
+            ),
           ],
-        ),
-      ],
-    );
+        ));
   }
 }

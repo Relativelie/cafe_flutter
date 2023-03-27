@@ -5,14 +5,16 @@ import 'package:flutter_application_1/theme/templates/text_styles.dart';
 
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: Colors.blue,
+  primaryColor: Color.fromARGB(255, 24, 24, 24),
   highlightColor: themeColors["green2"],
   cardColor: Color.fromARGB(255, 195, 37, 37),
   textTheme: TextTheme(
-    displayLarge: TextStyles.headline1.copyWith(color: Colors.white),
-    displayMedium: TextStyles.headline2.copyWith(color: Colors.white),
-    bodyLarge: TextStyles.bodyText1.copyWith(color: Colors.white),
-    bodyMedium: TextStyles.bodyText2.copyWith(color: Colors.white),
+    titleLarge: TextStyles.titleLarge.copyWith(color: Colors.white),
+    titleMedium: TextStyles.titleMedium.copyWith(color: Colors.white),
+    titleSmall: TextStyles.titleSmall.copyWith(color: Colors.white),
+    bodyLarge: TextStyles.bodyLarge.copyWith(color: Colors.white),
+    bodyMedium: TextStyles.bodyMedium.copyWith(color: Colors.white),
+    bodySmall: TextStyles.bodySmall.copyWith(color: Colors.white),
+    headlineSmall: TextStyles.bodyLargeCursive.copyWith(color: Colors.white),
   ),
-  
 );

@@ -34,12 +34,14 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
             final lala = context.read<RecipesService>().recipes;
 
             return Scaffold(
-                body: GridView.builder(
+                body: Container(
+                  color: Colors.red,
+                  child: GridView.builder(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      mainAxisSpacing: 40,
-                      crossAxisSpacing: 24,
+                      mainAxisSpacing: 2,
+                      crossAxisSpacing: 2,
                       // width / height: fixed for *all* items
                       childAspectRatio: 0.75,
                     ),
@@ -49,7 +51,9 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
                           cuisineLabels: lala[index].cuisineType,
                           dietLabels: lala[index].dietLabels,
                           ingredients: lala[index].ingredientLines.length,
-                        )),
+                        )
+                )
+                ),
                 appBar: AppBar(
                   title: const Text('Sample Code'),
                 ));

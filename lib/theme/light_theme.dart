@@ -4,13 +4,16 @@ import 'package:flutter_application_1/theme/templates/text_styles.dart';
 
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: Color.fromARGB(255, 79, 243, 33),
+  primaryColor: Colors.white,
   highlightColor: themeColors["green2"],
-    // cardColor: Color.fromARGB(255, 195, 37, 37),
   textTheme: const TextTheme(
-    displayLarge: TextStyles.headline1,
-    displayMedium: TextStyles.headline2,
-    bodyLarge: TextStyles.bodyText1,
-    bodyMedium: TextStyles.bodyText2,
-  ),
+    titleLarge: TextStyles.titleLarge,
+    titleMedium: TextStyles.titleMedium,
+    titleSmall: TextStyles.titleSmall,
+    bodyLarge: TextStyles.bodyLarge,
+    bodyMedium: TextStyles.bodyMedium,
+    bodySmall: TextStyles.bodySmall,
+    headlineSmall: TextStyles.bodyLargeCursive,
+  ), 
+  
 );

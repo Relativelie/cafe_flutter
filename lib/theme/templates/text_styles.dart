@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
 
 class TextStyles {
-  static const TextStyle headline1 = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-  );
+  static const TextStyle titleLarge = TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: "Oxygen");
 
-  static const TextStyle headline2 = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-  );
+  static const TextStyle titleMedium = TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+      fontFamily: "Oxygen");
 
-  static const TextStyle bodyText1 = TextStyle(
-    fontSize: 16,
-    color: Colors.black,
-  );
+  static const TextStyle titleSmall = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w300,
+      color: Colors.black,
+      fontFamily: "Oxygen");
 
-  static const TextStyle bodyText2 = TextStyle(
-    fontSize: 14,
-    color: Colors.black,
-  );
+  static const TextStyle bodyLargeCursive =
+      TextStyle(fontSize: 16, color: Colors.black, fontFamily: "DancingScript");
+
+  static const TextStyle bodyLarge  =
+      TextStyle(fontSize: 16, color: Colors.black, fontFamily: "Oxygen");
+
+  static const TextStyle bodyMedium  =
+      TextStyle(fontSize: 14, color: Colors.black, fontFamily: "Oxygen");
+
+  static const TextStyle bodySmall =
+      TextStyle(fontSize: 12, color: Colors.black, fontFamily: "Oxygen");
 }
