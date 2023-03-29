@@ -14,8 +14,8 @@ class TextStyles {
       fontFamily: "Oxygen");
 
   static const TextStyle titleSmall = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w300,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
       color: Colors.black,
       fontFamily: "Oxygen");
 

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/appTheme.dart';
+import 'package:flutter_application_1/utils/ellipsis_string.dart';
 
 class RecipeCard extends StatelessWidget {
   final String title;
-  final String image;
+  final String? image;
   final num ingredients;
   final List<String> cuisineLabels;
   final List<String> dietLabels;
 
   const RecipeCard(
       {required this.title,
-      required this.image,
+      this.image,
       required this.ingredients,
       required this.cuisineLabels,
       required this.dietLabels,
@@ -19,7 +20,7 @@ class RecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.background,
         padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -29,19 +30,18 @@ class RecipeCard extends StatelessWidget {
                 Container(
                   height: 120.0,
                   decoration: BoxDecoration(
+                    color: Colors.amber,
                     image: DecorationImage(
-                        image: NetworkImage(image),
+                        image: NetworkImage(image ?? ""),
                         fit: BoxFit.cover,
                         alignment: Alignment.bottomCenter),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    textAlign: TextAlign.center,
-                  ),
+                Text(
+                  ellipsisString(25, title),
+                  // title,
+                  style: Theme.of(context).textTheme.titleSmall,
+                  textAlign: TextAlign.center,
                 )
               ],
             ),
@@ -55,7 +55,7 @@ class RecipeCard extends StatelessWidget {
                   ...dietLabels
                       .take(3)
                       .map((diet) => Text('#$diet',
-                          style: Theme.of(context).textTheme.bodyMedium))
+                          style: Theme.of(context).textTheme.bodySmall))
                       .toList()
                 ]),
                 Container(
@@ -65,8 +65,8 @@ class RecipeCard extends StatelessWidget {
                     ),
                     margin: const EdgeInsets.only(top: 10),
                     padding: const EdgeInsets.all(5),
-                    child: Text('${ingredients.toString()} INGREDIENTS',
-                        style: Theme.of(context).textTheme.bodyLarge)),
+                    child: Text('${ingredients.toString()} ingredients',
+                        style: Theme.of(context).textTheme.bodyMedium)),
               ],
             ),
           ],

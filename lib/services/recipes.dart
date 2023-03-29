@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/config.dart';
 import 'package:flutter_application_1/dto/recipes/recipes.dart';
+import 'package:flutter_application_1/errors/networkError.dart';
 import 'package:flutter_application_1/services/methods.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-
 
 enum CuisineEnum {
   american,
@@ -46,12 +44,12 @@ enum DietEnum {
 //   const day = Day.MONDAY;
 //   print(day.text); /// Monday
 // }
+enum FiltersENUM { q }
+// "app_id": DotEnv().env["API_RECIPES_ID"] ?? "",
 
-    // "app_id": DotEnv().env["API_RECIPES_ID"] ?? "",
 class RecipesService with ChangeNotifier {
   final Methods methods;
   RecipesService(this.methods);
-
 
   final _edamamQueryParams = {
     "app_key": dotenv.env['API_RECIPES_KEY'],
@@ -62,21 +60,38 @@ class RecipesService with ChangeNotifier {
 
   List<Recipe> recipes = [];
   Recipe? selectedRecipe;
+  String? nextPage;
+  Map<String, dynamic> filters = {"q": "cherry"};
 
-  Future<void> getRecipes() async {
-    const params = {"q": "cherry"};
-    final queryParams = {..._edamamQueryParams, ...params};
-    final recipesData = await methods.get(_url, params: queryParams);
-    try {
-      var arr = recipesData["hits"];
-      if (arr.length != 0) {
-        recipes =
-            arr.map<Recipe>((item) => Recipe.fromJson(item["recipe"])).toList();
-      } else {
-        recipes = [];
-      }
-    } catch (error) {
-      rethrow;
+  Future<void> loadRecipes() async {
+    final queryParams = {..._edamamQueryParams, ...filters};
+    print("queryParams ${filters}");
+    await _getRecipes(queryParams);
+  }
+
+  Future<void> loadNextRecipes() async {
+    final queryParameters = Uri.parse(nextPage!).queryParametersAll;
+    await _getRecipes(queryParameters);
+  }
+
+  Future<void> _getRecipes(queryParameters) async {
+    final res = await methods.get(_url, params: queryParameters);
+    var recipesData = res["hits"];
+    if (recipesData.length != 0) {
+      recipes = recipesData
+          .map<Recipe>((item) => Recipe.fromJson(item["recipe"]))
+          .toList();
+      nextPage = res["_links"]["next"]?["href"];
+    } else {
+      recipes = [];
     }
+  }
+
+  void changeFilter(String key, value) {
+    filters[key] = value;
+  }
+
+  void resetNextPageUrl() {
+    nextPage = null;
   }
 }
