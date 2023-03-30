@@ -4,7 +4,7 @@ import 'package:flutter_application_1/errors/networkError.dart';
 import 'package:flutter_application_1/services/methods.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-enum CuisineEnum {
+enum CuisineENUM {
   american,
   asian,
   british,
@@ -28,7 +28,7 @@ enum CuisineEnum {
   world,
 }
 
-enum DietEnum {
+enum DietENUM {
   balanced("balanced"),
   highFiber("high-fiber");
 
@@ -36,7 +36,7 @@ enum DietEnum {
 // low-carb,
 // low-fat,
 // low-sodium,
-  const DietEnum(this.text);
+  const DietENUM(this.text);
   final String text;
 }
 
@@ -44,8 +44,10 @@ enum DietEnum {
 //   const day = Day.MONDAY;
 //   print(day.text); /// Monday
 // }
-enum FiltersENUM { q }
-// "app_id": DotEnv().env["API_RECIPES_ID"] ?? "",
+
+List<String> diets = ["balanced", "high-fiber", "high-protein"];
+
+enum FiltersENUM { q, diet }
 
 class RecipesService with ChangeNotifier {
   final Methods methods;
@@ -61,11 +63,27 @@ class RecipesService with ChangeNotifier {
   List<Recipe> recipes = [];
   Recipe? selectedRecipe;
   String? nextPage;
-  Map<String, dynamic> filters = {"q": "cherry"};
+  late Map<String, dynamic> filters = {
+    "q": "cherry",
+    "diet": _generateFilters()
+  };
+
+  Map<String, dynamic> _generateFilters() {
+    Map<String, dynamic> myMap = {};
+
+    diets.asMap().forEach((index, e) {
+      print("value ${e}");
+      myMap[e] = true;
+    });
+    print('myMap ${myMap}');
+    return {...myMap};
+    filters["diet"] = {...myMap};
+    print('filters ${filters}');
+  }
 
   Future<void> loadRecipes() async {
-    final queryParams = {..._edamamQueryParams, ...filters};
-    print("queryParams ${filters}");
+    final queryParams = {..._edamamQueryParams, "q": filters["q"]};
+    // print("queryParams ${filters}");
     await _getRecipes(queryParams);
   }
 

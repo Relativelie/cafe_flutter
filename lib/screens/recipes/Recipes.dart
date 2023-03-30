@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/errors/networkError.dart';
-import 'package:flutter_application_1/screens/recipes/widgets/sliverBar.dart';
+import 'package:flutter_application_1/screens/recipes/widgets/filters.dart';
 import 'package:flutter_application_1/services/recipes.dart';
 import 'package:flutter_application_1/utils/show_toast.dart';
 import 'package:flutter_application_1/common_widgets/SliverCardsGrid.dart';
@@ -71,7 +71,7 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> onChangeFilters(String val) async {
+  Future<void> onChangeSearch(String val) async {
     final recipeProvider = context.read<RecipesService>();
     recipeProvider.changeFilter("q", val);
     recipeProvider.resetNextPageUrl();
@@ -79,7 +79,9 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
     _fetchPage();
   }
 
-  Widget createCard(Recipe item) {
+
+
+  Widget _createCard(Recipe item) {
     return RecipeCard(
       title: item.label,
       image: item.image,
@@ -97,12 +99,12 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
           onRefresh: () => Future.sync(() => _pagingController.refresh()),
           child: CustomScrollView(
             slivers: [
-              SliverBar(),
+              Filters(onChangeSearch: onChangeSearch),
               Consumer(
                 builder: (context, provider, child) {
                   return SliverCardsGrid(
                       pagingController: _pagingController,
-                      widgetCreator: createCard);
+                      widgetCreator: _createCard);
                 },
               ),
             ],
@@ -118,11 +120,10 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
             Expanded(
                 flex: 5,
                 child: InputField(
-                    onSubmitted: (val) => onChangeFilters(val),
+                    onSubmitted: (val) => onChangeSearch(val),
                     placeholder: "Search recipe",
                     leftIcon: Icons.search,
-                    semanticIconLabel: "Search"
-                    )),
+                    semanticIconLabel: "Search")),
             // TO DO THEME SETTINGS
             Expanded(
                 flex: 1,
