@@ -1,95 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/dto/recipes/recipes.dart';
-import 'package:flutter_application_1/errors/networkError.dart';
+import 'package:flutter_application_1/models/recipes.dart';
 import 'package:flutter_application_1/services/methods.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-enum CuisineENUM {
-  american,
-  asian,
-  british,
-  caribbean,
-// centralEurope: "central europe",
-  chinese,
-// "eastern europe",
-  french,
-  greek,
-  indian,
-  italian,
-  japanese,
-  korean,
-  kosher,
-  mediterranean,
-  mexican,
-// middle eastern,
-  nordic,
-// a: "south american",
-// south east asian,
-  world,
-}
-
-enum DietENUM {
-  balanced("balanced"),
-  highFiber("high-fiber");
-
-// high-protein,
-// low-carb,
-// low-fat,
-// low-sodium,
-  const DietENUM(this.text);
-  final String text;
-}
-
-// void main() {
-//   const day = Day.MONDAY;
-//   print(day.text); /// Monday
-// }
-
-List<String> diets = ["balanced", "high-fiber", "high-protein"];
-
-enum FiltersENUM { q, diet }
 
 class RecipesService with ChangeNotifier {
   final Methods methods;
   RecipesService(this.methods);
 
-  final _edamamQueryParams = {
+  static final _edamamQueryParams = {
     "app_key": dotenv.env['API_RECIPES_KEY'],
     "app_id": dotenv.env['API_RECIPES_ID'],
     "type": "public",
   };
-  final _url = dotenv.env["BASE_RECIPES_URL"]!;
+  static final _url = dotenv.env["BASE_RECIPES_URL"]!;
 
   List<Recipe> recipes = [];
-  Recipe? selectedRecipe;
   String? nextPage;
-  late Map<String, dynamic> filters = {
-    "q": "cherry",
-    "diet": _generateFilters()
+  Recipe? selectedRecipe;
+  String searchingValue = "cherry";
+  late Map<FiltersENUM, Map<String, bool>> filters = {
+    FiltersENUM.diets: _generateFilter(diets),
+    FiltersENUM.cuisine: _generateFilter(cuisine)
   };
 
-  Map<String, dynamic> _generateFilters() {
-    Map<String, dynamic> myMap = {};
-
-    diets.asMap().forEach((index, e) {
-      print("value ${e}");
-      myMap[e] = true;
+  Map<String, bool> _generateFilter(List<String> filterList) {
+    Map<String, bool> generatedFilter = {};
+    filterList.asMap().forEach((index, e) {
+      generatedFilter[e] = false;
     });
-    print('myMap ${myMap}');
-    return {...myMap};
-    filters["diet"] = {...myMap};
-    print('filters ${filters}');
+    return {...generatedFilter};
   }
 
-  Future<void> loadRecipes() async {
-    final queryParams = {..._edamamQueryParams, "q": filters["q"]};
-    // print("queryParams ${filters}");
-    await _getRecipes(queryParams);
-  }
-
-  Future<void> loadNextRecipes() async {
-    final queryParameters = Uri.parse(nextPage!).queryParametersAll;
-    await _getRecipes(queryParameters);
+  Map<String, List<String>> _parseFilterForQuery(String key) {
+    List<String> checkedFilterValues = {...?filters[key]}
+        .entries
+        .where((entry) => entry.value)
+        .map((entry) => entry.key)
+        .toList();
+    return {key: checkedFilterValues};
   }
 
   Future<void> _getRecipes(queryParameters) async {
@@ -105,8 +54,26 @@ class RecipesService with ChangeNotifier {
     }
   }
 
-  void changeFilter(String key, value) {
-    filters[key] = value;
+  Future<void> loadRecipes() async {
+    var parsedFilters = {
+      SearchingQueryENUM.q.name: searchingValue,
+      ..._parseFilterForQuery(FiltersENUM.diets.name),
+      ..._parseFilterForQuery(FiltersENUM.cuisine.name)
+    };
+    await _getRecipes({..._edamamQueryParams, ...parsedFilters});
+  }
+
+  Future<void> loadNextRecipes() async {
+    final queryParameters = Uri.parse(nextPage!).queryParametersAll;
+    await _getRecipes(queryParameters);
+  }
+
+  void changeSearchVal(String value) {
+    searchingValue = value;
+  }
+
+  void changeFilters(value) {
+    filters = {...filters, ...value};
   }
 
   void resetNextPageUrl() {
