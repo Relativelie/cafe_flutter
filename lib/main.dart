@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: "Recipes",
-        home: const Recipes(),
+        home: const ScreensRecipes(),
         theme: lightTheme,
         darkTheme: darkTheme,
       ),

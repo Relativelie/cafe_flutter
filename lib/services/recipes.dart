@@ -79,4 +79,11 @@ class RecipesService with ChangeNotifier {
   void resetNextPageUrl() {
     nextPage = null;
   }
+
+  void resetFilters() {
+    filters = {
+      FiltersENUM.diets: _generateFilter(diets),
+      FiltersENUM.cuisine: _generateFilter(cuisine)
+    };
+  }
 }

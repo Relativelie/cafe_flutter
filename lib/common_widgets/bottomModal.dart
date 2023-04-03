@@ -29,7 +29,7 @@ class WdBottomModal extends StatelessWidget {
             onPressed: () {
               showModalBottomSheet<void>(
                 context: context,
-                // isScrollControlled: true,
+                isScrollControlled: true,
                 builder: (BuildContext context) {
                   return FractionallySizedBox(
                       heightFactor: modalSizes[size],
@@ -39,7 +39,7 @@ class WdBottomModal extends StatelessWidget {
                           children: [
 
                             Container(
-                              margin: EdgeInsets.only(top: 10),
+                              margin: const EdgeInsets.only(top: 10),
                               height: 5,
                               width: 50,
                               decoration: BoxDecoration(

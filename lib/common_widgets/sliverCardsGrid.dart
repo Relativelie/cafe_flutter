@@ -4,10 +4,10 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
-class SliverCardsGrid extends StatelessWidget {
+class WdSliverCardsGrid extends StatelessWidget {
   final PagingController<dynamic, dynamic> pagingController;
   final Function widgetCreator;
-  const SliverCardsGrid(
+  const WdSliverCardsGrid(
       {required this.pagingController, required this.widgetCreator, super.key});
 
   @override

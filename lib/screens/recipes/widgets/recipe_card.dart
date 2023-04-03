@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/theme/appTheme.dart';
-import 'package:flutter_application_1/utils/ellipsis_string.dart';
 
-class RecipeCard extends StatelessWidget {
+class WdRecipeCard extends StatelessWidget {
   final String title;
   final String? image;
   final num ingredients;
   final List<String> cuisineLabels;
   final List<String> dietLabels;
 
-  const RecipeCard(
+  const WdRecipeCard(
       {required this.title,
       this.image,
       required this.ingredients,
@@ -29,19 +28,23 @@ class RecipeCard extends StatelessWidget {
               children: [
                 Container(
                   height: 120.0,
+                  width: 120,
                   decoration: BoxDecoration(
-                    color: Colors.amber,
+                    borderRadius: const BorderRadius.all(Radius.circular(120)),
+                    color: Theme.of(context).highlightColor,
                     image: DecorationImage(
-                        image: NetworkImage(image ?? ""),
+                        image: NetworkImage(
+                            image?.replaceAll("https", "http") ?? ""),
                         fit: BoxFit.cover,
                         alignment: Alignment.bottomCenter),
                   ),
                 ),
                 Text(
-                  ellipsisString(25, title),
-                  // title,
+                  title,
                   style: Theme.of(context).textTheme.titleSmall,
                   textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 )
               ],
             ),
@@ -49,24 +52,26 @@ class RecipeCard extends StatelessWidget {
               children: [
                 Wrap(spacing: 5.0, alignment: WrapAlignment.center, children: [
                   ...cuisineLabels
-                      .take(3)
+                      .take(2)
                       .map((cuisine) => Text('#$cuisine'))
                       .toList(),
                   ...dietLabels
-                      .take(3)
+                      .take(2)
                       .map((diet) => Text('#$diet',
                           style: Theme.of(context).textTheme.bodySmall))
                       .toList()
                 ]),
                 Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).highlightColor,
+                      color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(AppTheme.xsRadius),
                     ),
                     margin: const EdgeInsets.only(top: 10),
                     padding: const EdgeInsets.all(5),
-                    child: Text('${ingredients.toString()} ingredients',
-                        style: Theme.of(context).textTheme.bodyMedium)),
+                    child: Text(
+                      '${ingredients.toString()} ingredients',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )),
               ],
             ),
           ],

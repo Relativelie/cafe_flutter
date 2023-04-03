@@ -15,7 +15,6 @@ class Methods {
     if (res.statusCode == 200) {
       return resVal;
     } else {
-      print("exeption");
       throw HttpException(res.body);
     }
   }

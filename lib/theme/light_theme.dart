@@ -5,11 +5,14 @@ import 'package:flutter_application_1/theme/templates/text_styles.dart';
 ThemeData lightTheme = ThemeData(
   // brightness: Brightness.light,
   primaryColor: Colors.blue,
-  highlightColor: themeColors["green2"],
+  highlightColor: themeColors["blue"],
+  elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: themeColors["blue"])),
+  canvasColor: themeColors["grey"],
 
-canvasColor: themeColors["grey"],
-
-  progressIndicatorTheme: ProgressIndicatorThemeData(color: themeColors["green"]),
+  progressIndicatorTheme:
+      ProgressIndicatorThemeData(color: themeColors["green"]),
   textTheme: const TextTheme(
     titleLarge: TextStyles.titleLarge,
     titleMedium: TextStyles.titleMedium,
@@ -18,20 +21,14 @@ canvasColor: themeColors["grey"],
     bodyMedium: TextStyles.bodyMedium,
     bodySmall: TextStyles.bodySmall,
     headlineSmall: TextStyles.bodyLargeCursive,
-    
-  ), 
+  ),
   colorScheme: ColorScheme(
-        background: Colors.white,
-            onBackground: Colors.black,
-    secondary: themeColors["grey"]!,
-    onPrimary: themeColors["green2"]!,
-
-
-    primary: Colors.white,
-
-
+    background: Colors.white,
+    onBackground: Colors.black,
+    secondary: themeColors["grey2"]!,
+    onPrimary: Colors.white,
+    primary: themeColors["pastel_pink"]!,
     primaryVariant: Colors.blueAccent,
-
     secondaryVariant: Colors.redAccent,
     surface: Colors.white,
     error: Colors.red,
@@ -40,5 +37,4 @@ canvasColor: themeColors["grey"],
     onError: Colors.white,
     brightness: Brightness.light,
   ),
-
 );

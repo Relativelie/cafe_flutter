@@ -5,20 +5,20 @@ import 'package:flutter_application_1/services/recipes.dart';
 import 'package:flutter_application_1/utils/show_toast.dart';
 import 'package:flutter_application_1/common_widgets/SliverCardsGrid.dart';
 import 'package:flutter_application_1/common_widgets/inputField.dart';
-import 'package:flutter_application_1/screens/recipes/widgets/recipeCard.dart';
+import 'package:flutter_application_1/screens/recipes/widgets/recipe_card.dart';
 
 import 'package:provider/provider.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../dto/recipes/recipes.dart';
 
-class Recipes extends StatefulWidget {
-  const Recipes({super.key});
+class ScreensRecipes extends StatefulWidget {
+  const ScreensRecipes({super.key});
 
   @override
-  State<Recipes> createState() => _RecipesState();
+  State<ScreensRecipes> createState() => _ScreensRecipesState();
 }
 
-class _RecipesState extends State<Recipes> with ChangeNotifier {
+class _ScreensRecipesState extends State<ScreensRecipes> with ChangeNotifier {
   final PagingController<String?, Recipe> _pagingController =
       PagingController(firstPageKey: null);
 
@@ -71,18 +71,22 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> onChangeSearch(String val) async {
+  Future<void> _onChangeSearchVal(val) async {
     final recipeProvider = context.read<RecipesService>();
-    recipeProvider.changeFilter("q", val);
-    recipeProvider.resetNextPageUrl();
-    _pagingController.refresh();
-    _fetchPage();
+    recipeProvider.changeSearchVal(val);
+    recipeProvider.resetFilters();
+    reloadPage();
   }
 
-
+  Future<void> reloadPage() async {
+    final recipeProvider = context.read<RecipesService>();
+    recipeProvider.resetNextPageUrl();
+    _pagingController.refresh();
+  }
 
   Widget _createCard(Recipe item) {
-    return RecipeCard(
+    print(item);
+    return WdRecipeCard(
       title: item.label,
       image: item.image,
       cuisineLabels: item.cuisineType,
@@ -99,10 +103,10 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
           onRefresh: () => Future.sync(() => _pagingController.refresh()),
           child: CustomScrollView(
             slivers: [
-              Filters(onChangeSearch: onChangeSearch),
+              WdFilters(reloadPage: reloadPage),
               Consumer(
                 builder: (context, provider, child) {
-                  return SliverCardsGrid(
+                  return WdSliverCardsGrid(
                       pagingController: _pagingController,
                       widgetCreator: _createCard);
                 },
@@ -119,8 +123,8 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
           children: [
             Expanded(
                 flex: 5,
-                child: InputField(
-                    onSubmitted: (val) => onChangeSearch(val),
+                child: WdInputField(
+                    onSubmitted: (val) => _onChangeSearchVal(val),
                     placeholder: "Search recipe",
                     leftIcon: Icons.search,
                     semanticIconLabel: "Search")),
@@ -131,7 +135,7 @@ class _RecipesState extends State<Recipes> with ChangeNotifier {
                   padding: EdgeInsets.all(10.0),
                   child: Container(
                     height: 20,
-                    color: Colors.yellow,
+                    color: Colors.white,
                   ),
                 ))
           ],
