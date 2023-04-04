@@ -10,14 +10,14 @@ import 'package:flutter_application_1/services/model_theme.dart';
 import 'package:flutter_application_1/services/recipes.dart';
 import '../../dto/recipes/recipes.dart';
 
-class ScreensRecipes extends StatefulWidget {
-  const ScreensRecipes({super.key});
+class ScreenRecipes extends StatefulWidget {
+  const ScreenRecipes({super.key});
 
   @override
-  State<ScreensRecipes> createState() => _ScreensRecipesState();
+  State<ScreenRecipes> createState() => _ScreenRecipesState();
 }
 
-class _ScreensRecipesState extends State<ScreensRecipes> with ChangeNotifier {
+class _ScreenRecipesState extends State<ScreenRecipes> with ChangeNotifier {
   final PagingController<String?, Recipe> _pagingController =
       PagingController(firstPageKey: null);
 

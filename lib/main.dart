@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/screens/recipes/screens_recipes.dart';
+import 'package:flutter_application_1/screens/recipes/screen_recipes.dart';
 import 'package:flutter_application_1/services/methods.dart';
 import 'package:flutter_application_1/services/model_theme.dart';
 import 'package:flutter_application_1/services/recipes.dart';
@@ -29,10 +29,11 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp(
               title: "Recipes",
-              home: const ScreensRecipes(),
+              home: const ScreenRecipes(),
               theme: lightTheme,
               darkTheme: darkTheme,
-              themeMode: themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
+              themeMode:
+                  themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
             ),
           );
         }));
