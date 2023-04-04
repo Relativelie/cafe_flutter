@@ -9,7 +9,9 @@
 
 
 ## IOS:
-https://user-images.githubusercontent.com/59819426/229763191-a72aabdd-223f-47be-9837-073d86c00e8f.mp4
+https://user-images.githubusercontent.com/59819426/229770973-9de49e8d-dc4e-45c5-b069-6a4a66fa9d57.mp4
+
+
 
 
 ## Android:
