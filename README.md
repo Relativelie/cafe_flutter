@@ -1,16 +1,21 @@
-# flutter_application_1
+## Development
 
-A new Flutter project.
+### 1
 
-## Getting Started
+Install Flutter, and all its dependencies, and create a new virtual device:
+<https://flutter.dev/docs/get-started/install>.
 
-This project is a starting point for a Flutter application.
+### 2
 
-A few resources to get you started if this is your first Flutter project:
+Create a new file ``.env`` in root of project. Copy all props from .env.example
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 3
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Start the application with ``flutter run`` or use your IDE
+
+IOS:
+https://user-images.githubusercontent.com/59819426/229763191-a72aabdd-223f-47be-9837-073d86c00e8f.mp4
+
+
+Android:
+https://user-images.githubusercontent.com/59819426/229761889-cd0c1b1c-01cc-4c7b-95c1-53a5022a4d84.mp4
