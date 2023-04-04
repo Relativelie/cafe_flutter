@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/dto/recipes/recipes.dart';
+import 'package:flutter_application_1/errors/network_error.dart';
 import 'package:flutter_application_1/models/recipes.dart';
 import 'package:flutter_application_1/services/methods.dart';
+import 'package:flutter_application_1/utils/show_toast.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RecipesService with ChangeNotifier {
@@ -20,8 +22,7 @@ class RecipesService with ChangeNotifier {
   Recipe? selectedRecipe;
   String searchingValue = "cherry";
   late Map<FiltersENUM, Map<String, bool>> filters = {
-    FiltersENUM.diets: _generateFilter(diets),
-    FiltersENUM.cuisine: _generateFilter(cuisine)
+    for (var v in FiltersENUM.values) v: _generateFilter(allFiltersData[v]!)
   };
 
   Map<String, bool> _generateFilter(List<String> filterList) {
@@ -32,17 +33,18 @@ class RecipesService with ChangeNotifier {
     return {...generatedFilter};
   }
 
-  Map<String, List<String>> _parseFilterForQuery(String key) {
+  List<String> _parseFilterForQuery(FiltersENUM key) {
     List<String> checkedFilterValues = {...?filters[key]}
         .entries
         .where((entry) => entry.value)
         .map((entry) => entry.key)
         .toList();
-    return {key: checkedFilterValues};
+    return checkedFilterValues;
   }
 
   Future<void> _getRecipes(queryParameters) async {
-    final res = await methods.get(_url, params: queryParameters);
+    try {
+      final res = await methods.get(_url, params: queryParameters);
     var recipesData = res["hits"];
     if (recipesData.length != 0) {
       recipes = recipesData
@@ -52,14 +54,20 @@ class RecipesService with ChangeNotifier {
     } else {
       recipes = [];
     }
+  } on HttpException catch (e) {
+      showToast(e.errors.toString());
+    } catch (e) {
+      print(e);
+    }
+    
   }
 
   Future<void> loadRecipes() async {
     var parsedFilters = {
       SearchingQueryENUM.q.name: searchingValue,
-      ..._parseFilterForQuery(FiltersENUM.diets.name),
-      ..._parseFilterForQuery(FiltersENUM.cuisine.name)
+      for (var v in FiltersENUM.values) v.name: _parseFilterForQuery(v)
     };
+
     await _getRecipes({..._edamamQueryParams, ...parsedFilters});
   }
 
@@ -73,7 +81,7 @@ class RecipesService with ChangeNotifier {
   }
 
   void changeFilters(value) {
-    filters = {...filters, ...value};
+    value.forEach((k, v) => filters[k] = Map.from(v));
   }
 
   void resetNextPageUrl() {
@@ -82,8 +90,7 @@ class RecipesService with ChangeNotifier {
 
   void resetFilters() {
     filters = {
-      FiltersENUM.diets: _generateFilter(diets),
-      FiltersENUM.cuisine: _generateFilter(cuisine)
+      for (var v in FiltersENUM.values) v: _generateFilter(allFiltersData[v]!)
     };
   }
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/common_widgets/bottomModal.dart';
+import 'package:provider/provider.dart';
+
+import 'package:flutter_application_1/common_widgets/bottom_modal.dart';
 import 'package:flutter_application_1/common_widgets/checkbox.dart';
 import 'package:flutter_application_1/models/recipes.dart';
 import 'package:flutter_application_1/services/recipes.dart';
 import 'package:flutter_application_1/utils/text_capitalize.dart';
-import 'package:provider/provider.dart';
 
 class WdFilters extends StatefulWidget {
   final Function reloadPage;
@@ -19,37 +20,38 @@ class WdFilters extends StatefulWidget {
 class _WdFiltersState extends State<WdFilters> {
   bool _isFiltersChanged = false;
   final Map<FiltersENUM, Map<String, bool>> _filters = {};
-  Map<FiltersENUM, Map<String, bool>> _savedFilters = {};
-
-  @override
-  void initState() {
-    super.initState();
-    final recipeProvider = context.read<RecipesService>();
-    _savedFilters = recipeProvider.filters;
-    _savedFilters.forEach((k, v) => _filters[k] = Map.from(v));
-  }
 
   void _acceptFilterChanges() async {
-    Navigator.pop(context);
-    if (_calcFiltersChanging(_savedFilters, _filters)) {
-      final recipeProvider = context.read<RecipesService>();
-      recipeProvider.changeFilters(_filters);
+    _closeModal();
+    if (_isFiltersChanged) {
+      context.read<RecipesService>().changeFilters(_filters);
       widget.reloadPage();
+      setState(() {
+        _isFiltersChanged = false;
+      });
     }
   }
 
+  void _closeModal() => Navigator.pop(context);
+
   bool _calcFiltersChanging(Map<FiltersENUM, Map<String, bool>> oldFilters,
       Map<FiltersENUM, Map<String, bool>> newFilters) {
-    var compareRes = true;
+    bool compareRes = true;
     oldFilters.forEach((k, v) {
       compareRes = compareRes && mapEquals(newFilters[k], oldFilters[k]);
     });
     return !compareRes;
   }
 
-  void _onPressCheckbox({blockKey, key, newVal}) {
+  void _onPressCheckboxItem({blockKey, key, newVal}) {
     _filters[blockKey]?[key] = newVal;
-    _isFiltersChanged = _calcFiltersChanging(_filters, _savedFilters);
+    final recipeProvider = context.read<RecipesService>();
+    _isFiltersChanged = _calcFiltersChanging(_filters, recipeProvider.filters);
+  }
+
+  void _generateFiltersContent() {
+    final recipeProvider = context.read<RecipesService>();
+    recipeProvider.filters.forEach((k, v) => _filters[k] = Map.from(v));
   }
 
   Column _buildFilterBlock(
@@ -65,7 +67,7 @@ class _WdFiltersState extends State<WdFilters> {
                   title: filter.key.toString().capitalize(),
                   value: filter.value,
                   onChanged: (newVal) {
-                    setState(() => _onPressCheckbox(
+                    setState(() => _onPressCheckboxItem(
                         blockKey: blockKey, key: filter.key, newVal: newVal));
                   }));
         },
@@ -96,6 +98,7 @@ class _WdFiltersState extends State<WdFilters> {
         )),
         actions: [
           WdBottomModal(
+              onPressed: _generateFiltersContent,
               button: Icon(
                 Icons.segment_outlined,
                 size: 30,
@@ -113,7 +116,7 @@ class _WdFiltersState extends State<WdFilters> {
                         Align(
                             alignment: Alignment.topRight,
                             child: TextButton(
-                              onPressed: _acceptFilterChanges,
+                              onPressed: _closeModal,
                               child: Text("Cancel",
                                   style: Theme.of(context)
                                       .textTheme
@@ -128,18 +131,18 @@ class _WdFiltersState extends State<WdFilters> {
                         builder: (BuildContext context, StateSetter setState) {
                       return Expanded(
                           child: ListView(
-                            physics: const ClampingScrollPhysics(),
-                           children: [
-                          ..._filters.entries.map((filterBlock) {
-                            return _buildFilterBlock(
-                                filterBlock.key, filterBlock.value, setState);
-                          }).toList(),
-                          ElevatedButton(
-                            onPressed: _acceptFilterChanges,
-                            child: Text(_isFiltersChanged ? "Accept" : "Close"),
-                          )
-                        ]));
-                      
+                              physics: const ClampingScrollPhysics(),
+                              children: [
+                            ..._filters.entries.map((filterBlock) {
+                              return _buildFilterBlock(
+                                  filterBlock.key, filterBlock.value, setState);
+                            }).toList(),
+                            ElevatedButton(
+                              onPressed: _acceptFilterChanges,
+                              child:
+                                  Text(_isFiltersChanged ? "Accept" : "Close"),
+                            )
+                          ]));
                     })
                   ],
                 ),

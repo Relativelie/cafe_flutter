@@ -1,5 +1,16 @@
+Map<FiltersENUM, List<String>> allFiltersData = {
+  FiltersENUM.diet: diet,
+  FiltersENUM.cuisineType: cuisineType
+};
 
-List<String> diets = [
+enum SearchingQueryENUM { q }
+
+enum FiltersENUM {
+  diet,
+  cuisineType,
+}
+
+List<String> diet = [
   "balanced",
   "high-fiber",
   "high-protein",
@@ -8,7 +19,7 @@ List<String> diets = [
   "low-sodium"
 ];
 
-List<String> cuisine = [
+List<String> cuisineType = [
   "american",
   "asian",
   "british",
@@ -31,10 +42,3 @@ List<String> cuisine = [
   "south east asian",
   "world"
 ];
-
-enum SearchingQueryENUM {q}
-
-enum FiltersENUM {
-  diets,
-  cuisine,
-}

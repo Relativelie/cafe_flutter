@@ -3,16 +3,13 @@ import 'package:flutter_application_1/theme/templates/colors.dart';
 import 'package:flutter_application_1/theme/templates/text_styles.dart';
 
 ThemeData lightTheme = ThemeData(
-  // brightness: Brightness.light,
-  primaryColor: Colors.blue,
-  highlightColor: themeColors["blue"],
+  primaryColor: themeColors["blue"],
+  highlightColor: themeColors["blue2"],
   elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-          backgroundColor: themeColors["blue"])),
+      style: ElevatedButton.styleFrom(backgroundColor: themeColors["blue2"])),
   canvasColor: themeColors["grey"],
-
   progressIndicatorTheme:
-      ProgressIndicatorThemeData(color: themeColors["green"]),
+      ProgressIndicatorThemeData(color: themeColors["blue2"]),
   textTheme: const TextTheme(
     titleLarge: TextStyles.titleLarge,
     titleMedium: TextStyles.titleMedium,
@@ -22,19 +19,12 @@ ThemeData lightTheme = ThemeData(
     bodySmall: TextStyles.bodySmall,
     headlineSmall: TextStyles.bodyLargeCursive,
   ),
-  colorScheme: ColorScheme(
-    background: Colors.white,
-    onBackground: Colors.black,
-    secondary: themeColors["grey2"]!,
-    onPrimary: Colors.white,
-    primary: themeColors["pastel_pink"]!,
-    primaryVariant: Colors.blueAccent,
-    secondaryVariant: Colors.redAccent,
-    surface: Colors.white,
-    error: Colors.red,
-    onSecondary: Colors.white,
-    onSurface: Colors.black,
-    onError: Colors.white,
-    brightness: Brightness.light,
+  colorScheme: const ColorScheme.light().copyWith(
+    background: themeColors["white"],
+    onBackground: themeColors["black"],
+    secondary: themeColors["grey2"],
+    onPrimary: themeColors["white"],
+    primary: themeColors["pastel_pink"],
+    error: themeColors["red"],
   ),
 );

@@ -4,9 +4,11 @@ class HttpException implements Exception {
   Map<String, dynamic>? errors;
 
   HttpException(dynamic responseBody) {
-    
     if (responseBody == null) {
-      errors = {'unknown_error': 'An unknown error occurred, no further information available'};
+      errors = {
+        'unknown_error':
+            'An unknown error occurred, no further information available'
+      };
     } else {
       try {
         errors = json.decode(responseBody);
@@ -14,7 +16,6 @@ class HttpException implements Exception {
         errors = responseBody;
       }
     }
-    print(errors);
     errors = errors;
   }
 

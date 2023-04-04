@@ -22,10 +22,10 @@ class TextStyles {
   static const TextStyle bodyLargeCursive =
       TextStyle(fontSize: 18, color: Colors.black, fontFamily: "DancingScript");
 
-  static const TextStyle bodyLarge  =
+  static const TextStyle bodyLarge =
       TextStyle(fontSize: 16, color: Colors.black, fontFamily: "Oxygen");
 
-  static const TextStyle bodyMedium  =
+  static const TextStyle bodyMedium =
       TextStyle(fontSize: 14, color: Colors.black, fontFamily: "Oxygen");
 
   static const TextStyle bodySmall =

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/errors/networkError.dart';
-import 'package:flutter_application_1/screens/recipes/widgets/filters.dart';
-import 'package:flutter_application_1/services/recipes.dart';
-import 'package:flutter_application_1/utils/show_toast.dart';
-import 'package:flutter_application_1/common_widgets/SliverCardsGrid.dart';
-import 'package:flutter_application_1/common_widgets/inputField.dart';
-import 'package:flutter_application_1/screens/recipes/widgets/recipe_card.dart';
-
 import 'package:provider/provider.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+import 'package:flutter_application_1/common_widgets/sliver_cards_grid.dart';
+import 'package:flutter_application_1/common_widgets/input_field.dart';
+import 'package:flutter_application_1/screens/recipes/widgets/filters.dart';
+import 'package:flutter_application_1/screens/recipes/widgets/recipe_card.dart';
+import 'package:flutter_application_1/services/model_theme.dart';
+import 'package:flutter_application_1/services/recipes.dart';
 import '../../dto/recipes/recipes.dart';
 
 class ScreensRecipes extends StatefulWidget {
@@ -33,16 +32,10 @@ class _ScreensRecipesState extends State<ScreensRecipes> with ChangeNotifier {
   Future<void> _fetchPage() async {
     final recipeProvider = context.read<RecipesService>();
     bool isFirstPage = recipeProvider.nextPage == null;
-    try {
-      if (isFirstPage) {
-        _loadFirstPage(recipeProvider);
-      } else {
-        _loadNextPage(recipeProvider);
-      }
-    } on HttpException catch (e) {
-      showToast(e.errors.toString());
-    } catch (e) {
-      print(e);
+    if (isFirstPage) {
+      _loadFirstPage(recipeProvider);
+    } else {
+      _loadNextPage(recipeProvider);
     }
   }
 
@@ -85,7 +78,6 @@ class _ScreensRecipesState extends State<ScreensRecipes> with ChangeNotifier {
   }
 
   Widget _createCard(Recipe item) {
-    print(item);
     return WdRecipeCard(
       title: item.label,
       image: item.image,
@@ -97,50 +89,54 @@ class _ScreensRecipesState extends State<ScreensRecipes> with ChangeNotifier {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () => Future.sync(() => _pagingController.refresh()),
-          child: CustomScrollView(
-            slivers: [
-              WdFilters(reloadPage: reloadPage),
-              Consumer(
-                builder: (context, provider, child) {
-                  return WdSliverCardsGrid(
-                      pagingController: _pagingController,
-                      widgetCreator: _createCard);
-                },
-              ),
+    return Consumer<ModelTheme>(
+        builder: (context, ModelTheme themeNotifier, child) {
+      return Scaffold(
+        body: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: () => Future.sync(() => _pagingController.refresh()),
+            child: CustomScrollView(
+              slivers: [
+                WdFilters(reloadPage: reloadPage),
+                Consumer(
+                  builder: (context, provider, child) {
+                    return WdSliverCardsGrid(
+                        pagingController: _pagingController,
+                        widgetCreator: _createCard);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Expanded(
+                  flex: 5,
+                  child: SizedBox(
+                      height: 35,
+                      child: WdInputField(
+                          onSubmitted: (val) => _onChangeSearchVal(val),
+                          placeholder: "Search recipe",
+                          leftIcon: Icons.search,
+                          semanticIconLabel: "Search"))),
+              Expanded(
+                flex: 1,
+                child: IconButton(
+                    icon: Icon(
+                        themeNotifier.isDark
+                            ? Icons.nightlight_round
+                            : Icons.wb_sunny,
+                        color: Theme.of(context).colorScheme.background),
+                    onPressed: () {
+                      themeNotifier.isDark = !themeNotifier.isDark;
+                    }),
+              )
             ],
           ),
         ),
-      ),
-      appBar: AppBar(
-          title: Container(
-        height: 35,
-        alignment: Alignment.bottomRight,
-        child: Row(
-          children: [
-            Expanded(
-                flex: 5,
-                child: WdInputField(
-                    onSubmitted: (val) => _onChangeSearchVal(val),
-                    placeholder: "Search recipe",
-                    leftIcon: Icons.search,
-                    semanticIconLabel: "Search")),
-            // TO DO THEME SETTINGS
-            Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Container(
-                    height: 20,
-                    color: Colors.white,
-                  ),
-                ))
-          ],
-        ),
-      )),
-    );
+      );
+    });
   }
 }

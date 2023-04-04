@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/theme/appTheme.dart';
 
 class WdRecipeCard extends StatelessWidget {
   final String title;
@@ -64,13 +63,15 @@ class WdRecipeCard extends StatelessWidget {
                 Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(AppTheme.xsRadius),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     margin: const EdgeInsets.only(top: 10),
                     padding: const EdgeInsets.all(5),
                     child: Text(
                       '${ingredients.toString()} ingredients',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
                     )),
               ],
             ),

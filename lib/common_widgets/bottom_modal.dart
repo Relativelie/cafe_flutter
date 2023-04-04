@@ -11,10 +11,12 @@ class WdBottomModal extends StatelessWidget {
   final Widget button;
   final Widget modalContent;
   final ModalSizesENUM? size;
+  final Function? onPressed;
   const WdBottomModal(
       {required this.button,
       required this.modalContent,
       this.size = ModalSizesENUM.full,
+      this.onPressed,
       super.key});
 
   @override
@@ -27,6 +29,9 @@ class WdBottomModal extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),
                 shadowColor: MaterialStateProperty.all(Colors.transparent)),
             onPressed: () {
+              if (onPressed != null) {
+                onPressed!();
+              }
               showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,
@@ -37,7 +42,6 @@ class WdBottomModal extends StatelessWidget {
                         color: Theme.of(context).colorScheme.background,
                         child: Column(
                           children: [
-
                             Container(
                               margin: const EdgeInsets.only(top: 10),
                               height: 5,
@@ -50,8 +54,7 @@ class WdBottomModal extends StatelessWidget {
                             Expanded(child: modalContent)
                           ],
                         ),
-                      )
-                      );
+                      ));
                 },
               );
             },
