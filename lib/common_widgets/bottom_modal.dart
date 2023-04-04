@@ -27,7 +27,8 @@ class WdBottomModal extends StatelessWidget {
           child: ElevatedButton(
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                shadowColor: MaterialStateProperty.all(Colors.transparent)),
+                shadowColor: MaterialStateProperty.all(Colors.transparent),
+                elevation: MaterialStateProperty.all(0)),
             onPressed: () {
               if (onPressed != null) {
                 onPressed!();

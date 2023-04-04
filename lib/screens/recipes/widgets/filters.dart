@@ -88,14 +88,19 @@ class _WdFiltersState extends State<WdFilters> {
         pinned: true,
         expandedHeight: 25.0,
         flexibleSpace: FlexibleSpaceBar(
-            title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Look for recipes for every day with us',
-                style: Theme.of(context).textTheme.headlineSmall),
-            Icon(Icons.favorite, color: Theme.of(context).highlightColor)
-          ],
-        )),
+          titlePadding: EdgeInsets.zero,
+          title: Align(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Look for recipes for every day with us',
+                    style: Theme.of(context).textTheme.headlineSmall),
+                Icon(Icons.favorite, color: Theme.of(context).highlightColor)
+              ],
+            ),
+          ),
+        ),
         actions: [
           WdBottomModal(
               onPressed: _generateFiltersContent,
